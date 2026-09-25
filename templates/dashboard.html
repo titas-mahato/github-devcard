@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard • {{ stats.name }} (@{{ stats.username }}){% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <!-- User Profile Header -->
+    <div class="glass rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div class="flex items-center gap-5">
+            <img src="{{ stats.avatar_url }}" alt="{{ stats.username }}" class="w-20 h-20 rounded-2xl ring-2 ring-sky-500/50 shadow-lg object-cover" />
+            <div>
+                <div class="flex items-center gap-2">
+                    <h1 class="text-2xl font-bold text-white">{{ stats.name }}</h1>
+                    <span class="text-xs px-2.5 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20 font-medium">OAuth Authenticated</span>
+                </div>
+                <p class="text-sm text-slate-400 mt-0.5">
+                    <a href="https://github.com/{{ stats.username }}" target="_blank" class="hover:text-sky-400 transition">@{{ stats.username }}</a>
+                    {% if stats.location %} • <i data-lucide="map-pin" class="w-3.5 h-3.5 inline text-slate-500"></i> {{ stats.location }}{% endif %}
+                </p>
+                <p class="text-xs text-slate-400 mt-2 max-w-xl line-clamp-2">{{ stats.bio }}</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 w-full md:w-auto">
+            <a href="/logout" class="w-full md:w-auto text-center px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition">
+                Sign Out
+            </a>
+            <a href="https://github.com/settings/developers" target="_blank" class="w-full md:w-auto text-center px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center justify-center gap-1.5">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                <span>OAuth Settings</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Counter Tiles -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        <div class="glass rounded-2xl p-5 border border-slate-800">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Total Stars</span>
+                <i data-lucide="star" class="w-4 h-4 text-amber-400"></i>
+            </div>
+            <p class="text-2xl sm:text-3xl font-extrabold text-white mt-2">{{ stats.total_stars }}</p>
+        </div>
+
+        <div class="glass rounded-2xl p-5 border border-slate-800">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Public Repos</span>
+                <i data-lucide="folder-git-2" class="w-4 h-4 text-sky-400"></i>
+            </div>
+            <p class="text-2xl sm:text-3xl font-extrabold text-white mt-2">{{ stats.public_repos }}</p>
+        </div>
+
+        <div class="glass rounded-2xl p-5 border border-slate-800">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Followers</span>
+                <i data-lucide="users" class="w-4 h-4 text-pink-400"></i>
+            </div>
+            <p class="text-2xl sm:text-3xl font-extrabold text-white mt-2">{{ stats.followers }}</p>
+        </div>
+
+        <div class="glass rounded-2xl p-5 border border-slate-800">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Total Forks</span>
+                <i data-lucide="git-fork" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+            <p class="text-2xl sm:text-3xl font-extrabold text-white mt-2">{{ stats.total_forks }}</p>
+        </div>
+    </div>
+
+    <!-- DevCard Generator & Customizer -->
+    <div class="glass rounded-3xl p-6 sm:p-10 border border-slate-800 shadow-2xl mb-12">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+            <div>
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-sky-400"></i>
+                    Your Personalized DevCard
+                </h2>
+                <p class="text-xs text-slate-400 mt-1">Select a theme, then copy the embed snippet for your profile README.</p>
+            </div>
+
+            <!-- Theme Buttons -->
+            <div class="flex flex-wrap items-center gap-2 bg-slate-900/90 p-1.5 rounded-xl border border-slate-800 text-xs">
+                <span class="text-slate-400 px-2 font-medium">Theme:</span>
+                <button onclick="setTheme('midnight')" class="dash-theme-btn px-3 py-1 rounded-lg font-medium transition bg-sky-500 text-slate-950 font-bold" data-theme="midnight">Midnight</button>
+                <button onclick="setTheme('cyberpunk')" class="dash-theme-btn px-3 py-1 rounded-lg font-medium transition text-slate-400 hover:text-white" data-theme="cyberpunk">Cyberpunk</button>
+                <button onclick="setTheme('nord')" class="dash-theme-btn px-3 py-1 rounded-lg font-medium transition text-slate-400 hover:text-white" data-theme="nord">Nord</button>
+                <button onclick="setTheme('dracula')" class="dash-theme-btn px-3 py-1 rounded-lg font-medium transition text-slate-400 hover:text-white" data-theme="dracula">Dracula</button>
+                <button onclick="setTheme('slate')" class="dash-theme-btn px-3 py-1 rounded-lg font-medium transition text-slate-400 hover:text-white" data-theme="slate">Slate</button>
+                <button onclick="setTheme('light')" class="dash-theme-btn px-3 py-1 rounded-lg font-medium transition text-slate-400 hover:text-white" data-theme="light">Light</button>
+            </div>
+        </div>
+
+        <!-- Live SVG Card Display -->
+        <div class="py-8 flex flex-col items-center justify-center">
+            <div class="max-w-[540px] w-full transform hover:scale-[1.01] transition-transform duration-300">
+                <img id="dashCardImg" src="/api/card/{{ stats.username }}?theme=midnight" alt="{{ stats.username }} DevCard" class="w-full rounded-2xl shadow-2xl border border-slate-800" />
+            </div>
+
+            <!-- Download Button -->
+            <div class="mt-6 flex items-center gap-3">
+                <a id="downloadBtn" href="/api/card/{{ stats.username }}?theme=midnight&download=1" download="devcard-{{ stats.username }}.svg" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-200 hover:text-white transition">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span>Download SVG</span>
+                </a>
+                <a id="directLinkBtn" href="/api/card/{{ stats.username }}?theme=midnight" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-200 hover:text-white transition">
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                    <span>Open Raw SVG</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Embed Snippets -->
+        <div class="space-y-4 pt-6 border-t border-slate-800/80">
+            <div>
+                <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-xs font-medium text-slate-300 flex items-center gap-1.5">
+                        <i data-lucide="code" class="w-3.5 h-3.5 text-sky-400"></i>
+                        Markdown Snippet (GitHub Profile README.md)
+                    </span>
+                    <button onclick="copyDashSnippet('markdown')" id="copyMdBtn" class="text-xs text-sky-400 hover:text-sky-300 font-semibold transition">
+                        Copy Markdown
+                    </button>
+                </div>
+                <code id="markdownSnippet" class="block font-mono text-xs text-sky-300 bg-slate-950 p-3 rounded-xl overflow-x-auto border border-slate-800/80">
+[![{{ stats.name }}'s GitHub DevCard]({{ base_url }}/api/card/{{ stats.username }}?theme=midnight)](https://github.com/{{ stats.username }})
+                </code>
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-xs font-medium text-slate-300 flex items-center gap-1.5">
+                        <i data-lucide="code-2" class="w-3.5 h-3.5 text-purple-400"></i>
+                        HTML Snippet
+                    </span>
+                    <button onclick="copyDashSnippet('html')" id="copyHtmlBtn" class="text-xs text-purple-400 hover:text-purple-300 font-semibold transition">
+                        Copy HTML
+                    </button>
+                </div>
+                <code id="htmlSnippet" class="block font-mono text-xs text-purple-300 bg-slate-950 p-3 rounded-xl overflow-x-auto border border-slate-800/80">
+&lt;a href="https://github.com/{{ stats.username }}"&gt;&lt;img src="{{ base_url }}/api/card/{{ stats.username }}?theme=midnight" alt="{{ stats.name }}'s GitHub DevCard" /&gt;&lt;/a&gt;
+                </code>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const username = "{{ stats.username }}";
+    const name = "{{ stats.name }}";
+    const baseUrl = "{{ base_url }}";
+    let activeTheme = 'midnight';
+
+    function setTheme(theme) {
+        activeTheme = theme;
+        
+        // Update Card Image
+        const img = document.getElementById('dashCardImg');
+        img.src = `${baseUrl}/api/card/${username}?theme=${theme}&t=${Date.now()}`;
+
+        // Update Download Link
+        document.getElementById('downloadBtn').href = `${baseUrl}/api/card/${username}?theme=${theme}&download=1`;
+        document.getElementById('directLinkBtn').href = `${baseUrl}/api/card/${username}?theme=${theme}`;
+
+        // Update Theme Button styling
+        document.querySelectorAll('.dash-theme-btn').forEach(btn => {
+            if (btn.getAttribute('data-theme') === theme) {
+                btn.className = 'dash-theme-btn px-3 py-1 rounded-lg font-medium transition bg-sky-500 text-slate-950 font-bold';
+            } else {
+                btn.className = 'dash-theme-btn px-3 py-1 rounded-lg font-medium transition text-slate-400 hover:text-white';
+            }
+        });
+
+        // Update Snippets
+        const md = `[![${name}'s GitHub DevCard](${baseUrl}/api/card/${username}?theme=${theme})](https://github.com/${username})`;
+        document.getElementById('markdownSnippet').textContent = md;
+
+        const html = `<a href="https://github.com/${username}"><img src="${baseUrl}/api/card/${username}?theme=${theme}" alt="${name}'s GitHub DevCard" /></a>`;
+        document.getElementById('htmlSnippet').textContent = html;
+    }
+
+    function copyDashSnippet(type) {
+        let text = '';
+        let btn = null;
+        if (type === 'markdown') {
+            text = document.getElementById('markdownSnippet').textContent.trim();
+            btn = document.getElementById('copyMdBtn');
+        } else {
+            text = document.getElementById('htmlSnippet').textContent.trim();
+            btn = document.getElementById('copyHtmlBtn');
+        }
+
+        navigator.clipboard.writeText(text).then(() => {
+            const original = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => {
+                btn.textContent = original;
+            }, 2000);
+        });
+    }
+</script>
+{% endblock %}

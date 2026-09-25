@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}GitHub Profile DevCard & Stats Generator{% endblock %}
+
+{% block content %}
+<div class="relative overflow-hidden pt-12 pb-20 lg:pt-20">
+    <!-- Ambient Background Glows -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-sky-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+    <div class="absolute top-1/3 left-1/3 w-[400px] h-[300px] bg-purple-500/10 blur-[140px] rounded-full pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Hero Section -->
+        <div class="text-center max-w-3xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs text-sky-400 font-medium mb-6">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                FastAPI OAuth 2.0 • GitHub Developer Program Ready
+            </div>
+            
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                Showcase your GitHub stats with a sleek <span class="bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-indigo-400 to-purple-400">DevCard</span>
+            </h1>
+
+            <p class="mt-6 text-lg sm:text-xl text-slate-400 leading-relaxed">
+                Connect with GitHub OAuth, calculate your real-time repository statistics, top programming languages, and embed a live-updating vector SVG card directly on your profile README.
+            </p>
+
+            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="/login" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-base shadow-xl shadow-sky-500/25 transition-all transform hover:-translate-y-0.5">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                    <span>Log in with GitHub</span>
+                </a>
+                <a href="#preview" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white font-semibold text-base transition">
+                    <i data-lucide="eye" class="w-5 h-5"></i>
+                    <span>Interactive Preview</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Interactive Live Preview Section -->
+        <div id="preview" class="mt-20 scroll-mt-24">
+            <div class="glass rounded-3xl p-6 sm:p-10 border border-slate-800/80 shadow-2xl relative">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-sky-400"></i>
+                            Live Dynamic Card Preview
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Vector SVG rendered in real-time with customizable themes.</p>
+                    </div>
+
+                    <!-- Theme Switcher Controls -->
+                    <div class="flex flex-wrap items-center gap-2 bg-slate-900/90 p-1.5 rounded-xl border border-slate-800 text-xs">
+                        <span class="text-slate-400 px-2 font-medium">Theme:</span>
+                        <button onclick="updatePreview('midnight')" class="theme-btn px-3 py-1 rounded-lg font-medium transition bg-sky-500 text-slate-950 font-bold" data-theme="midnight">Midnight</button>
+                        <button onclick="updatePreview('cyberpunk')" class="theme-btn px-3 py-1 rounded-lg font-medium transition text-slate-400 hover:text-white" data-theme="cyberpunk">Cyberpunk</button>
+                        <button onclick="updatePreview('nord')" class="theme-btn px-3 py-1 rounded-lg font-medium transition text-slate-400 hover:text-white" data-theme="nord">Nord</button>
+                        <button onclick="updatePreview('dracula')" class="theme-btn px-3 py-1 rounded-lg font-medium transition text-slate-400 hover:text-white" data-theme="dracula">Dracula</button>
+                        <button onclick="updatePreview('slate')" class="theme-btn px-3 py-1 rounded-lg font-medium transition text-slate-400 hover:text-white" data-theme="slate">Slate</button>
+                        <button onclick="updatePreview('light')" class="theme-btn px-3 py-1 rounded-lg font-medium transition text-slate-400 hover:text-white" data-theme="light">Light</button>
+                    </div>
+                </div>
+
+                <!-- SVG Display Container -->
+                <div class="py-8 flex items-center justify-center overflow-x-auto">
+                    <div id="cardContainer" class="max-w-[540px] w-full transform hover:scale-[1.01] transition-transform duration-300">
+                        <img id="cardImage" src="/api/preview-card?theme=midnight" alt="GitHub DevCard Preview" class="w-full rounded-2xl shadow-2xl border border-slate-800" />
+                    </div>
+                </div>
+
+                <!-- Markdown snippet box -->
+                <div class="mt-4 bg-slate-900/90 rounded-2xl p-4 border border-slate-800">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-mono font-medium text-slate-400 flex items-center gap-1.5">
+                            <i data-lucide="code" class="w-4 h-4 text-sky-400"></i>
+                            GitHub Profile README Embed Code
+                        </span>
+                        <button onclick="copySnippet()" id="copyBtn" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 hover:text-white border border-slate-700 transition">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                            <span id="copyText">Copy Markdown</span>
+                        </button>
+                    </div>
+                    <code id="embedSnippet" class="block font-mono text-xs text-sky-300 bg-slate-950 p-3 rounded-xl overflow-x-auto border border-slate-800/80">
+[![GitHub DevCard]({{ base_url }}/api/preview-card?theme=midnight)](https://github.com)
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <!-- How It Works & Architecture -->
+        <div class="mt-28 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass rounded-2xl p-6 border border-slate-800/80">
+                <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 mb-4">
+                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">1. Secure OAuth 2.0</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    Standard GitHub authorization code flow. No passwords handled; uses signed session cookies and scoped tokens.
+                </p>
+            </div>
+
+            <div class="glass rounded-2xl p-6 border border-slate-800/80">
+                <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mb-4">
+                    <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">2. Live Stats Aggregator</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    Calculates total earned stars, repository count, follower counts, and top languages distribution directly from GitHub APIs.
+                </p>
+            </div>
+
+            <div class="glass rounded-2xl p-6 border border-slate-800/80">
+                <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4">
+                    <i data-lucide="image" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">3. Dynamic Vector SVG</h3>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    Camo-proxy compliant vector SVGs with embedded base64 avatars and responsive proportions designed for GitHub READMEs.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let currentTheme = 'midnight';
+    const baseUrl = "{{ base_url }}";
+
+    function updatePreview(theme) {
+        currentTheme = theme;
+        const img = document.getElementById('cardImage');
+        img.src = `${baseUrl}/api/preview-card?theme=${theme}&t=${Date.now()}`;
+
+        // Update active theme button style
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            if (btn.getAttribute('data-theme') === theme) {
+                btn.className = 'theme-btn px-3 py-1 rounded-lg font-medium transition bg-sky-500 text-slate-950 font-bold';
+            } else {
+                btn.className = 'theme-btn px-3 py-1 rounded-lg font-medium transition text-slate-400 hover:text-white';
+            }
+        });
+
+        // Update snippet
+        const snippet = `[![GitHub DevCard](${baseUrl}/api/preview-card?theme=${theme})](https://github.com)`;
+        document.getElementById('embedSnippet').textContent = snippet;
+    }
+
+    function copySnippet() {
+        const text = document.getElementById('embedSnippet').textContent.trim();
+        navigator.clipboard.writeText(text).then(() => {
+            const copyText = document.getElementById('copyText');
+            copyText.textContent = 'Copied!';
+            setTimeout(() => {
+                copyText.textContent = 'Copy Markdown';
+            }, 2000);
+        });
+    }
+</script>
+{% endblock %}

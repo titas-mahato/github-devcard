@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GitHub Profile DevCard & Stats Generator{% endblock %}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .glass {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen antialiased bg-slate-950 text-slate-100 selection:bg-sky-500 selection:text-white">
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 glass border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/20 group-hover:scale-105 transition-transform">
+                    <i data-lucide="badge-check" class="w-5 h-5 text-white"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-indigo-300 to-purple-400">DevCard</span>
+                    <span class="hidden sm:inline text-xs text-slate-400 font-mono ml-1.5 px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700">OAuth v2</span>
+                </div>
+            </a>
+
+            <div class="flex items-center gap-4">
+                <a href="https://github.com" target="_blank" class="text-sm font-medium text-slate-400 hover:text-white transition flex items-center gap-1.5">
+                    <i data-lucide="github" class="w-4 h-4"></i>
+                    <span class="hidden md:inline">GitHub</span>
+                </a>
+                {% if user %}
+                    <a href="/dashboard" class="text-sm font-medium text-sky-400 hover:text-sky-300 transition flex items-center gap-1.5">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/logout" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white transition">
+                        Logout
+                    </a>
+                {% else %}
+                    <a href="/login" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold transition shadow-md shadow-sky-500/20">
+                        <i data-lucide="github" class="w-4 h-4"></i>
+                        <span>Log in with GitHub</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 bg-slate-950/80 py-8 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>© 2026 GitHub Profile DevCard & Stats Generator. Built with FastAPI & OAuth 2.0.</p>
+            <div class="flex items-center gap-6">
+                <a href="/api/preview-card" target="_blank" class="hover:text-slate-400 transition">Sample SVG Card</a>
+                <span class="text-slate-700">•</span>
+                <span class="text-slate-400 font-mono">GitHub Developer Program Ready</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
