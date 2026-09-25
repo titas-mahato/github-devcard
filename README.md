@@ -32,8 +32,6 @@ github-devcard/
 │   ├── base.html                    # Tailwind CSS layout
 │   ├── index.html                   # Landing page with live preview
 │   └── dashboard.html               # Authenticated metrics dashboard
-├── GUIDE_PHASE1_OAUTH_SETUP.md      # OAuth App registration walkthrough
-├── GUIDE_PHASE4_DEVELOPER_PROGRAM.md # GitHub Developer Program join guide
 └── README.md                        # Documentation
 ```
 
@@ -66,7 +64,7 @@ SECRET_KEY=generate_a_random_secret_key
 DEFAULT_THEME=midnight
 ```
 
-*(See [GUIDE_PHASE1_OAUTH_SETUP.md](GUIDE_PHASE1_OAUTH_SETUP.md) for full instructions on getting your Client ID and Secret).*
+*(Obtain your Client ID and Secret from GitHub Developer settings -> OAuth Apps).*
 
 ### 3. Launch the Server
 
@@ -114,4 +112,4 @@ GitHub's markdown image proxy (camo) requires image URLs to be publicly reachabl
 
 ## GitHub Developer Program
 
-Follow [GUIDE_PHASE4_DEVELOPER_PROGRAM.md](GUIDE_PHASE4_DEVELOPER_PROGRAM.md) to register your new app and earn your official GitHub Developer Program badge!
+Register your OAuth app in your GitHub Developer settings to qualify as an official member of the GitHub Developer Program.

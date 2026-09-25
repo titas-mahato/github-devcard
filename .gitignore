@@ -20,3 +20,6 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Local developer notes & setup guides
+GUIDE_*.md
