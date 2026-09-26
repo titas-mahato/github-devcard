@@ -1,6 +1,6 @@
 # GitHub Profile DevCard & Stats Generator
 
-A high-performance, lightweight web application built with Python FastAPI and OAuth 2.0 that generates dynamic vector SVG cards showing live GitHub statistics, repositories, and programming language distributions.
+A lightweight web application built with Python FastAPI and OAuth 2.0 that generates dynamic vector SVG cards showing live GitHub statistics, repositories, and programming language distributions.
 
 Designed specifically to be embedded directly into GitHub Profile README.md files.
 
@@ -13,7 +13,6 @@ Designed specifically to be embedded directly into GitHub Profile README.md file
 - Dynamic Vector SVG Generator: Zero external image processing dependencies. Embedded Base64 avatars comply with GitHub's camo proxy.
 - Multiple Themes: Built-in support for midnight, cyberpunk, nord, dracula, slate, and light.
 - Interactive Dashboard: 1-click Markdown and HTML embed snippet copying + direct SVG download.
-- GitHub Developer Program Ready: Pre-configured structure and guides to register as an official GitHub Developer Program Member.
 
 ---
 
@@ -109,7 +108,3 @@ GitHub's markdown image proxy (camo) requires image URLs to be publicly reachabl
    ```
 
 ---
-
-## GitHub Developer Program
-
-Register your OAuth app in your GitHub Developer settings to qualify as an official member of the GitHub Developer Program.
